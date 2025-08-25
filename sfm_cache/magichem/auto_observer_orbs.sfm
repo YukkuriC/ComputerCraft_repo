@@ -1,0 +1,152 @@
+-- 1. MAIN SCRIPT
+name "MAIN"
+
+every 2 second do
+    if set_mode_sun has gt 0 then
+        -- sync mode from input
+        if my_mode_sun has eq 0 then
+            -- remove current orbs
+            input from each work
+            if my_mode_star has gt 0 then
+                output to cache_star
+            else if my_mode_moon has gt 0 then
+                output to cache_moon
+            end
+            forget
+
+            -- switch mode now
+            input from my_mode
+            output to my_mode_sun
+            forget
+        end
+
+        -- recover finished orbs
+        input magichem:solar_orb from each work
+        -- input magichem:lunar_orb from each work
+        -- input magichem:sidereal_orb from each work
+        output to src
+        forget
+
+        -- input orbs (cache first)
+        input from cache_sun
+        input from input_sun
+        output 1 to each work
+        forget
+    else if set_mode_star has gt 0 then
+        -- sync mode from input
+        if my_mode_star has eq 0 then
+            -- remove current orbs
+            input from each work
+            if my_mode_sun has gt 0 then
+                output to cache_sun
+            else if my_mode_moon has gt 0 then
+                output to cache_moon
+            end
+            forget
+
+            -- switch mode now
+            input from my_mode
+            output to my_mode_star
+            forget
+        end
+
+        -- recover finished orbs
+        -- input magichem:solar_orb from each work
+        -- input magichem:lunar_orb from each work
+        input magichem:sidereal_orb from each work
+        output to src
+        forget
+
+        -- input orbs (cache first)
+        input from cache_star
+        input from input_star
+        output 1 to each work
+        forget
+    else if set_mode_moon has gt 0 then
+        -- sync mode from input
+        if my_mode_moon has eq 0 then
+            -- remove current orbs
+            input from each work
+            if my_mode_star has gt 0 then
+                output to cache_star
+            else if my_mode_sun has gt 0 then
+                output to cache_sun
+            end
+            forget
+
+            -- switch mode now
+            input from my_mode
+            output to my_mode_moon
+            forget
+        end
+
+        -- recover finished orbs
+        -- input magichem:solar_orb from each work
+        input magichem:lunar_orb from each work
+        -- input magichem:sidereal_orb from each work
+        output to src
+        forget
+
+        -- input orbs (cache first)
+        input from cache_moon
+        input from input_moon
+        output 1 to each work
+        forget
+    end
+
+    -- auto stock input materials
+    -- 1. prepare target
+    if set_mode_sun has gt 0 then
+        input magichem:solar_orb from src
+    else if set_mode_moon has gt 0 then
+        input magichem:lunar_orb from src
+    else if set_mode_star has gt 0 then
+        input magichem:sidereal_orb from src
+    end
+    output to count_output_cache
+    forget
+    -- 2. count by type
+    if set_mode_sun has gt 0 and overall count_sun_work has lt 16 then
+        input 1 magichem:glass_orb from src
+        output to input_sun
+    else if set_mode_moon has gt 0 and overall count_moon_work has lt 16 then
+        input 1 magichem:glass_orb from src
+        output to input_moon
+    else if set_mode_star has gt 0 and overall count_star_work has lt 16 then
+        input 1 magichem:glass_orb from src
+        output to input_star
+    end
+    forget
+    -- 3. recover products
+    input from count_output_cache
+    output to src
+end
+
+-- 2. DAYLIGHT CHECK
+-- >= 3 means sun
+name "Sun Mover"
+
+every 20 ticks do
+    if redstone ge 3 then
+        input from no_sun
+        output to sun
+    else
+        input from sun
+        output to no_sun
+    end
+end
+
+-- 3. MOON PHASE CHECK
+-- https://github.com/AranaiRa/MagiChem/blob/1.20.1/src/main/java/com/aranaira/magichem/block/SelenolabeBlock.java
+-- >= 4 means moon light
+name "Moon Mover"
+
+every 20 ticks do
+    if redstone ge 4 then
+        input from star
+        output to moon
+    else
+        input from moon
+        output to star
+    end
+end
