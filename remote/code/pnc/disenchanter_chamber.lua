@@ -1,11 +1,12 @@
 -- input peripheral names
 local input, equipments, raw_output, books = table.unpack(arg)
-raw_output = peripheral.wrap(raw_output)
 
 if #arg < 4 then
     print('USAGE: disenchanter_chamber <input> <equipments> <raw_output> <books>')
-    exit()
+    return
 end
+
+raw_output = peripheral.wrap(raw_output)
 
 local function doPush(target, slot, name)
     print(string.format('pushing %s to %s', item, target))
