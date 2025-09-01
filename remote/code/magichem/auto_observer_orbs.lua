@@ -164,6 +164,8 @@ end
 lightModeNow = getLightMode()
 print('light mode:', lightModeNow)
 
+local orreryCheckStep = 0
+
 while 1 do
     -- on switch mode
     local newLightMode = getLightMode()
@@ -175,6 +177,10 @@ while 1 do
         dumpObservers(false)
     end
     fillObservers(20)
-    handleOrrery()
+    orreryCheckStep = orreryCheckStep + 1
+    if orreryCheckStep >= 10 then
+        handleOrrery()
+        orreryCheckStep = 0
+    end
     sleep(1)
 end
