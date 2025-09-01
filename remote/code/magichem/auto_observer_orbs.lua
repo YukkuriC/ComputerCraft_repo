@@ -21,6 +21,8 @@ end
 
 if 'vars' then
     allObservers = {peripheral.find('magichem:astral_observer')}
+    allOrrerys = {peripheral.find('magichem:eldrin_orrery')}
+    print(string.format('found %s observer & %s orrery', #allObservers, #allOrrerys))
     inputBox = peripheral.wrap(input)
 
     caches = {
@@ -39,6 +41,13 @@ if 'vars' then
         moon = 'magichem:lunar_orb',
         star = 'magichem:sidereal_orb'
     }
+
+    orrerySlots = {
+        [1] = 'magichem:solar_orb',
+        [2] = 'magichem:lunar_orb',
+        [3] = 'magichem:sidereal_orb'
+    }
+    glassRecoverSlots = {6, 8}
 
     GLASS_ORB = 'magichem:glass_orb'
 end
@@ -118,6 +127,37 @@ if 'actions' then
             end
         end
     end
+
+    function handleOrrery()
+        -- collect each type orbs
+        local orbItems = {}
+        for slot = 1, inputBox.size() do
+            local item = inputBox.getItemDetail(slot)
+            if item ~= nil then
+                for slotTarget, id in pairs(orrerySlots) do
+                    if id == item.name then
+                        item.slot = slot
+                        orbItems[slotTarget] = item
+                        break
+                    end
+                end
+            end
+        end
+
+        for _, orr in pairs(allOrrerys) do
+            -- fill 1 orb of each type
+            for slot = 1, 3 do
+                local frmItem = orbItems[slot]
+                if frmItem ~= nil and frmItem.count > 0 and orr.getItemDetail(slot) == nil then
+                    frmItem.count = frmItem.count - orr.pullItems(input, frmItem.slot, 1, slot)
+                end
+            end
+            -- collect used up glass orbs
+            for slot = 6, 8 do
+                orr.pushItems(input, slot)
+            end
+        end
+    end
 end
 
 -- run
@@ -135,5 +175,6 @@ while 1 do
         dumpObservers(false)
     end
     fillObservers(20)
+    handleOrrery()
     sleep(1)
 end
