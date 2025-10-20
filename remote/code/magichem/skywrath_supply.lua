@@ -14,6 +14,8 @@ if 'vars' then
     -- outputBox = peripheral.wrap(output)
 
     recipeInputs = {
+        ['mna:arcane_ash'] = 8,
+        ['minecraft:torchflower'] = 3,
         ['magichem:verdigris'] = 30,
         ['minecraft:arrow'] = 6
     }
@@ -22,6 +24,17 @@ end
 if 'helpers' then
     function getGroupCount(item)
         return recipeInputs[item.name] or 1
+    end
+
+    function trySort()
+        local allItems = inputBox.list()
+        local sortedPtr = 1
+        for i, item in pairs(allItems) do
+            if i ~= sortedPtr then
+                inputBox.pushItems(input, i)
+            end
+            sortedPtr = sortedPtr + 1
+        end
     end
 
     function supplyAll()
@@ -56,6 +69,7 @@ if 'helpers' then
 end
 
 while 1 do
+    trySort()
     if supplyAll() then
         print('Strike!')
         redstone.setOutput(redstone_side, true)
