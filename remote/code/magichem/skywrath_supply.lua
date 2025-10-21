@@ -27,13 +27,15 @@ if 'helpers' then
     end
 
     function trySort()
+        local appearedIds = {}
         local allItems = inputBox.list()
         local sortedPtr = 1
         for i, item in pairs(allItems) do
-            if i ~= sortedPtr then
+            if appearedIds[item.name] or i ~= sortedPtr then
                 inputBox.pushItems(input, i)
             end
             sortedPtr = sortedPtr + 1
+            appearedIds[item.name] = 1
         end
     end
 
