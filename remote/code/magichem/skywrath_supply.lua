@@ -77,7 +77,7 @@ while 1 do
         redstone.setOutput(redstone_side, true)
         sleep(1)
         redstone.setOutput(redstone_side, false)
-        sleep(4)
+        sleep(5)
         grabAll()
     else
         grabAll()
