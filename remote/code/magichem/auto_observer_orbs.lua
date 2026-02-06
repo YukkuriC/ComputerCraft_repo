@@ -6,6 +6,7 @@ end
 
 local input, cache_sun, cache_moon, cache_star, redstone_sun, redstone_moon, target_count = table.unpack(arg)
 target_count = tonumber(target_count or 16)
+print('target = ' .. tostring(target_count))
 
 if 'helpers' then
     function getLightMode()
@@ -176,7 +177,7 @@ while 1 do
     else
         dumpObservers(false)
     end
-    fillObservers(20)
+    fillObservers(target_count)
     orreryCheckStep = orreryCheckStep + 1
     if orreryCheckStep >= 10 then
         handleOrrery()
