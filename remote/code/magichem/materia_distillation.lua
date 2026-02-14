@@ -20,6 +20,9 @@ ITEM_MAP = {
     water = "clay",
     earth = "clay",
     arcane = "budding_amethyst",
+    verdant = "mana_pool",
+    fleshy = "slime_block",
+    nourishing = "hay_block",
 
     -- admixture
     storm = "lightning_rod",
@@ -27,6 +30,7 @@ ITEM_MAP = {
     realm = "lodestone",
     color = "dye"
 }
+SPARE_ITEM = 'rarefied_waste'
 
 function moveItem(itemId)
     for i = 1, slotsSrc, 1 do
@@ -35,6 +39,7 @@ function moveItem(itemId)
             return invSrc.pushItems(dst, i, batch_count)
         end
     end
+    return 0
 end
 
 while 1 do
@@ -42,15 +47,17 @@ while 1 do
     for materia, item in pairs(ITEM_MAP) do
         local myPercent = pMirror.getPercent(materia)
         if myPercent < target_percent then
-            print(string.format("moving %s for materia %s (%.2f%% todo)", item, materia,
+            local cnt = moveItem(item)
+            print(string.format("moving %d %s for mat. %s (%.2f%%)", cnt, item, materia,
                 (target_percent - myPercent) * 100))
-            moveItem(item)
             movedSome = true
         end
     end
     if movedSome then
         sleep(1)
     else
-        sleep(5)
+        local cnt = moveItem(SPARE_ITEM)
+        print(string.format("spare, consuming %d waste", cnt))
+        sleep(10)
     end
 end
