@@ -32,11 +32,12 @@ ITEM_MAP = {
 }
 SPARE_ITEM = 'rarefied_waste'
 
-function moveItem(itemId)
+function moveItem(itemId, cnt)
+    cnt = cnt or batch_count
     for i = 1, slotsSrc, 1 do
         local detail = invSrc.getItemDetail(i)
         if detail and string.match(detail.name, itemId) then
-            return invSrc.pushItems(dst, i, batch_count)
+            return invSrc.pushItems(dst, i, cnt)
         end
     end
     return 0
@@ -56,8 +57,8 @@ while 1 do
     if movedSome then
         sleep(1)
     else
-        local cnt = moveItem(SPARE_ITEM)
+        local cnt = moveItem(SPARE_ITEM, 64)
         print(string.format("spare, consuming %d waste", cnt))
-        sleep(10)
+        sleep(5)
     end
 end
