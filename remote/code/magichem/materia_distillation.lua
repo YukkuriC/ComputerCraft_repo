@@ -28,6 +28,7 @@ ITEM_MAP = {
     storm = "lightning_rod",
     firmament = "starfield",
     realm = "lodestone",
+    acid = "diavrosite",
     color = "dye"
 }
 SPARE_ITEM = 'rarefied_waste'
@@ -49,9 +50,14 @@ while 1 do
         local myPercent = pMirror.getPercent(materia)
         if myPercent < target_percent then
             local cnt = moveItem(item)
-            print(string.format("moving %d %s for mat. %s (%.2f%%)", cnt, item, materia,
-                (target_percent - myPercent) * 100))
-            movedSome = true
+            if cnt > 0 then
+                print(string.format("moving %d %s for %s (%.2f%%)", cnt, item, materia,
+                    (target_percent - myPercent) * 100))
+                movedSome = true
+            else
+                print(string.format("need %s for %s (%.2f%%), but lack", item, materia,
+                    (target_percent - myPercent) * 100))
+            end
         end
     end
     if movedSome then
