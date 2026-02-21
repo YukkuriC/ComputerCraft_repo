@@ -29,6 +29,8 @@ ITEM_MAP = {
     firmament = "starfield",
     realm = "lodestone",
     acid = "diavrosite",
+    energy = 'mana_fluxfield',
+    light = 'glowstone',
     color = "dye"
 }
 SPARE_ITEM = 'rarefied_waste'
