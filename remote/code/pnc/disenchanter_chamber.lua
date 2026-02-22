@@ -16,7 +16,7 @@ print('STARTED...')
 -- recycle output
 while 1 do
     local hasInput = false
-    for i = 1, 27 do
+    for i = 1, raw_output.size() do
         local item = raw_output.getItemDetail(i)
         if item then
             hasInput = true
@@ -40,6 +40,6 @@ while 1 do
         end
     end
     if not hasInput then
-        sleep(0.5)
+        sleep(2)
     end
 end
