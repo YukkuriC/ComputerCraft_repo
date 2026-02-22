@@ -40,6 +40,6 @@ while 1 do
         end
     end
     if not hasInput then
-        sleep(2)
+        sleep(1)
     end
 end
