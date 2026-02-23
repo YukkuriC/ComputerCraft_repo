@@ -4,10 +4,14 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
     local pNexus = peripheral.wrap(nexus)
 
     local function craftWithItems(target)
-        pME.craftItem({
+        local success, msg = pME.craftItem({
             name = target,
             count = 1
         })
+        if not success then
+            print(string.format("error when crafting %s: %s", target, msg))
+            return
+        end
 
         if 'init recipe' then
             while pNexus.getItemDetail(2) do
@@ -42,6 +46,9 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
                     started = true
                 end
                 if failsafe >= 10 then
+                    for slot = 3, 7 do
+                        pNexus.pushItems(item_input, i)
+                    end
                     pNexus.fillRequiredItems(item_input)
                     failsafe = 0
                 end
@@ -49,7 +56,7 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
         end
 
         -- collect output
-        for i = 8, 16, 1 do
+        for i = 8, 16 do
             pNexus.pushItems(item_output, i)
         end
     end
@@ -89,6 +96,17 @@ local function stock_keeper(nexus, me_bridge, item_input, item_output, targetMap
     end
 end
 
+local function craft_cmd(nexus, me_bridge, item_input, item_output)
+    local pME = peripheral.wrap(me_bridge)
+    local craftWithItems = buildCrafter(nexus, me_bridge, item_input, item_output)
+
+    while 1 do
+        print("Input crafting target id:")
+        craftWithItems(io.read())
+    end
+end
+
 return {
-    stock_keeper = stock_keeper
+    stock_keeper = stock_keeper,
+    craft_cmd = craft_cmd
 }
