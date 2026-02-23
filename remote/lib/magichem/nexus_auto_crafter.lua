@@ -3,6 +3,10 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
     local pME = peripheral.wrap(me_bridge)
     local pNexus = peripheral.wrap(nexus)
 
+    local function isIdle(stage) -- according to AlchemicalNexusScreen.java L164
+        return stage == 0 or stage == 3
+    end
+
     local function craftWithItems(target)
         local success, msg = pME.craftItem({
             name = target,
@@ -27,30 +31,25 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
         -- each stage
         for i = 1, pNexus.getTotalStages(), 1 do
             -- print('filling items for stage ' .. i)
-            while pNexus.fillRequiredItems(item_input) <= 0 do
-                sleep(1)
-            end
+            pNexus.fillRequiredItems(item_input)
 
-            local started = i > 1
             local failsafe = 0
             while 1 do
                 sleep(1)
-                failsafe = failsafe + 1
                 local stages = pNexus.getStage()
+                local running = isIdle(stages[2])
                 if stages[1] + 1 ~= i or stages[2] == 0 then
-                    if started then
-                        -- print('stage ' .. i .. ' finished')
-                        break
+                    -- print('stage ' .. i .. ' finished')
+                    break
+                elseif isIdle(stages[2]) then
+                    failsafe = failsafe + 1
+                    if failsafe >= 5 then
+                        for slot = 3, 7 do -- flow back
+                            pNexus.pushItems(item_input, i)
+                        end
+                        pNexus.fillRequiredItems(item_input)
+                        failsafe = 0
                     end
-                elseif stages[2] > 0 then
-                    started = true
-                end
-                if failsafe >= 10 then
-                    for slot = 3, 7 do
-                        pNexus.pushItems(item_input, i)
-                    end
-                    pNexus.fillRequiredItems(item_input)
-                    failsafe = 0
                 end
             end
         end
