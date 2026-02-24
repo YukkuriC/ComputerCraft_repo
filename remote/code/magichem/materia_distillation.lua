@@ -23,6 +23,11 @@ ITEM_MAP = {
     verdant = "mana_pool",
     fleshy = "slime_block",
     nourishing = "hay_block",
+    -- nigredo = "vex_armor_trim",
+    nigredo = "coast_armor_trim",
+    albedo = "snout_armor_trim",
+    citrinitas = "minecraft:spire_armor_trim",
+    -- rubedo = "beacon",
 
     -- admixture
     storm = "lightning_rod",
@@ -66,7 +71,9 @@ while 1 do
         sleep(1)
     else
         local cnt = moveItem(SPARE_ITEM, 64)
-        print(string.format("spare, consuming %d waste", cnt))
+        if cnt > 0 then
+            print(string.format("spare, consuming %d waste", cnt))
+        end
         sleep(5)
     end
 end
