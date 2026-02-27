@@ -27,7 +27,7 @@ ITEM_MAP = {
     nigredo = "coast_armor_trim",
     albedo = "snout_armor_trim",
     citrinitas = "minecraft:spire_armor_trim",
-    -- rubedo = "beacon",
+    rubedo = "beacon",
 
     -- admixture
     storm = "lightning_rod",
@@ -36,9 +36,14 @@ ITEM_MAP = {
     acid = "diavrosite",
     energy = 'mana_fluxfield',
     light = 'glowstone',
+    potential = 'inert_wisdom_stone',
+    curse = 'infested_stone',
     color = "dye"
 }
 SPARE_ITEM = 'rarefied_waste'
+BATCH_OVERRIDE_MAP = {
+    curse = 64
+}
 
 function moveItem(itemId, cnt)
     cnt = cnt or batch_count
@@ -56,7 +61,7 @@ while 1 do
     for materia, item in pairs(ITEM_MAP) do
         local myPercent = pMirror.getPercent(materia)
         if myPercent < target_percent then
-            local cnt = moveItem(item)
+            local cnt = moveItem(item, BATCH_OVERRIDE_MAP[materia])
             if cnt > 0 then
                 print(string.format("moving %d %s for %s (%.2f%%)", cnt, item, materia,
                     (target_percent - myPercent) * 100))
