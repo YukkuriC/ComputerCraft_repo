@@ -34,14 +34,17 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
             pNexus.fillRequiredItems(item_input)
 
             local failsafe = 0
+            local started = false
             while 1 do
                 sleep(1)
-                local stages = pNexus.getStage()
-                local running = isIdle(stages[2])
-                if stages[1] + 1 ~= i or stages[2] == 0 then
+                local stageCrafting, stageAnim = table.unpack(pNexus.getStage())
+                local idle = isIdle(stageAnim)
+                if stageCrafting + 1 ~= i or stageAnim == 0 then
                     -- print('stage ' .. i .. ' finished')
-                    break
-                elseif isIdle(stages[2]) then
+                    if started then
+                        break
+                    end
+                elseif idle then
                     failsafe = failsafe + 1
                     if failsafe >= 5 then
                         for slot = 3, 7 do -- flow back
@@ -50,6 +53,8 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
                         pNexus.fillRequiredItems(item_input)
                         failsafe = 0
                     end
+                else
+                    started = true
                 end
             end
         end
@@ -58,6 +63,8 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
         for i = 8, 16 do
             pNexus.pushItems(item_output, i)
         end
+
+        print('Done.')
     end
 
     return craftWithItems
@@ -86,6 +93,7 @@ local function stock_keeper(nexus, me_bridge, item_input, item_output, targetMap
         return ret
     end
 
+    sleep(10) -- wait for grid init
     while 1 do
         if not processMap(targetMap) then
             if not processMap(targetMapSecondary) then
