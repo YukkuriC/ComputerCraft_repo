@@ -23,10 +23,12 @@ ITEM_MAP = {
     verdant = "mana_pool",
     fleshy = "slime_block",
     nourishing = "hay_block",
+    precious = 'inert_wisdom_stone',
+    mineral = 'emerald_block',
     -- nigredo = "vex_armor_trim",
     nigredo = "coast_armor_trim",
     albedo = "snout_armor_trim",
-    citrinitas = "minecraft:spire_armor_trim",
+    citrinitas = "spire_armor_trim",
     rubedo = "beacon",
 
     -- admixture
@@ -37,12 +39,24 @@ ITEM_MAP = {
     energy = 'mana_fluxfield',
     light = 'glowstone',
     potential = 'inert_wisdom_stone',
-    curse = 'infested_stone',
-    color = "dye"
+    monster = "blaze_block",
+    destruction = 'tnt',
+    -- curse = 'infested_stone',
+    curse = 'end_crystal',
+    color = "dye",
+    bone = "bone",
+    creature = "lens_tripwire",
+    healing = 'rune_lust',
+    adornment = 'invisibility_cloak',
+
+    -- admixture from exaltation
+    depths = 'terrarium_depths'
+    -- rubedo = 'scarlet_coral'
 }
 SPARE_ITEM = 'rarefied_waste'
 BATCH_OVERRIDE_MAP = {
-    curse = 64
+    color = 32,
+    bone = 32
 }
 
 function moveItem(itemId, cnt)
@@ -62,13 +76,12 @@ while 1 do
         local myPercent = pMirror.getPercent(materia)
         if myPercent < target_percent then
             local cnt = moveItem(item, BATCH_OVERRIDE_MAP[materia])
+            local needPercent = (target_percent - myPercent) * 100
             if cnt > 0 then
-                print(string.format("moving %d %s for %s (%.2f%%)", cnt, item, materia,
-                    (target_percent - myPercent) * 100))
+                print(string.format("%s(%.1f%%) = %d %s", materia, needPercent, cnt, item))
                 movedSome = true
             else
-                print(string.format("need %s for %s (%.2f%%), but lack", item, materia,
-                    (target_percent - myPercent) * 100))
+                print(string.format("%s(%.1f%%) needs %s but lack", materia, needPercent, item))
             end
         end
     end
