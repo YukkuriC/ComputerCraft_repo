@@ -49,6 +49,7 @@ ITEM_MAP = {
     healing = 'rune_lust',
     gourmet = 'rune_gluttony',
     adornment = 'invisibility_cloak',
+    nectar = 'honeycomb_block',
 
     -- admixture from exaltation
     depths = 'terrarium_depths'
