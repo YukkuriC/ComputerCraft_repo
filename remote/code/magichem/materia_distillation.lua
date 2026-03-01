@@ -47,6 +47,7 @@ ITEM_MAP = {
     bone = "bone",
     creature = "lens_tripwire",
     healing = 'rune_lust',
+    gourmet = 'rune_gluttony',
     adornment = 'invisibility_cloak',
 
     -- admixture from exaltation

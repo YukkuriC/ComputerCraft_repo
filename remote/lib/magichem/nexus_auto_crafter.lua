@@ -38,13 +38,10 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
             while 1 do
                 sleep(1)
                 local stageCrafting, stageAnim = table.unpack(pNexus.getStage())
-                local idle = isIdle(stageAnim)
-                if stageCrafting + 1 ~= i or stageAnim == 0 then
-                    -- print('stage ' .. i .. ' finished')
-                    if started then
+                if isIdle(stageAnim) then
+                    if started and (stageCrafting + 1 ~= i or stageAnim == 0) then
                         break
                     end
-                elseif idle then
                     failsafe = failsafe + 1
                     if failsafe >= 5 then
                         for slot = 3, 7 do -- flow back
@@ -93,7 +90,7 @@ local function stock_keeper(nexus, me_bridge, item_input, item_output, targetMap
         return ret
     end
 
-    sleep(10) -- wait for grid init
+    sleep(3) -- wait for grid init
     while 1 do
         if not processMap(targetMap) then
             if not processMap(targetMapSecondary) then
