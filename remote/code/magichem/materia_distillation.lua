@@ -43,12 +43,17 @@ ITEM_MAP = {
     destruction = 'tnt',
     -- curse = 'infested_stone',
     curse = 'end_crystal',
-    color = "dye",
+    -- color = "dye",
+    color = 'petal_block',
+    odors = 'petal_block',
     bone = "bone",
     creature = "lens_tripwire",
     healing = 'rune_lust',
     gourmet = 'rune_gluttony',
+    wizard = 'invisibility_cloak',
     adornment = 'invisibility_cloak',
+    nectar = 'honeycomb_block',
+    delight = 'sugar',
 
     -- admixture from exaltation
     depths = 'terrarium_depths'
@@ -57,6 +62,9 @@ ITEM_MAP = {
 SPARE_ITEM = 'rarefied_waste'
 BATCH_OVERRIDE_MAP = {
     color = 32,
+    odors = 32,
+    nectar = 16,
+    delight = 32,
     bone = 32
 }
 

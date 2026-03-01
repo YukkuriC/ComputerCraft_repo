@@ -43,7 +43,7 @@ local function buildCrafter(nexus, me_bridge, item_input, item_output)
                         break
                     end
                     failsafe = failsafe + 1
-                    if failsafe >= 5 then
+                    if failsafe >= 3 then
                         for slot = 3, 7 do -- flow back
                             pNexus.pushItems(item_input, i)
                         end
