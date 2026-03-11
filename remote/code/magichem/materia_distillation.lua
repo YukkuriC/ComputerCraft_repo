@@ -27,7 +27,8 @@ ITEM_MAP = {
     mineral = 'emerald_block',
     -- nigredo = "vex_armor_trim",
     nigredo = "coast_armor_trim",
-    albedo = "snout_armor_trim",
+    -- albedo = "snout_armor_trim",
+    albedo = 'silence_armor_trim',
     citrinitas = "spire_armor_trim",
     rubedo = "beacon",
 
@@ -41,11 +42,14 @@ ITEM_MAP = {
     potential = 'inert_wisdom_stone',
     monster = "blaze_block",
     destruction = 'tnt',
+    history = 'silence_armor_trim',
     -- curse = 'infested_stone',
     curse = 'end_crystal',
     -- color = "dye",
     color = 'petal_block',
     odors = 'petal_block',
+    erosion = 'lens_gravity',
+    luck = 'conjuration_catalyst',
     bone = "bone",
     creature = "lens_tripwire",
     healing = 'rune_lust',
@@ -54,13 +58,16 @@ ITEM_MAP = {
     adornment = 'invisibility_cloak',
     nectar = 'honeycomb_block',
     delight = 'sugar',
+    wood = 'composter',
 
     -- admixture from exaltation
+    mountains = 'terrarium_mountains',
     depths = 'terrarium_depths'
     -- rubedo = 'scarlet_coral'
 }
 SPARE_ITEM = 'rarefied_waste'
 BATCH_OVERRIDE_MAP = {
+    wood = 32,
     color = 32,
     odors = 32,
     nectar = 16,
